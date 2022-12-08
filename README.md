@@ -4,7 +4,7 @@ See [Advent of Code 2022](https://adventofcode.com)
 
 ### Overview
 
-My daily solutions from the 2022 Advent of Code. Done in Scala 3. 
+My daily solutions from the 2022 Advent of Code. Done in Scala 3. Apologies, it's not immensely idiomatic. I have not used Scala in a while and this is a way to get back on the horse. There is a fair amount of "mapping", but will try for more concise solutions soo with more "folding".
 
 ### Usage
 
