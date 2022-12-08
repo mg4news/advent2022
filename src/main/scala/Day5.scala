@@ -47,7 +47,7 @@ object Day5 extends DayX(5) {
       case _ => st
 
   override def runner(ls: List[String]): Unit =
-    val lls = StringListHelper.splitByEmptyString(ls)
+    val lls = ListHelpers.splitByEmptyString(ls)
     val insts = lls(1).map(s => Instruction(s))
     val stacks = List(stack1, stack2, stack3, stack4, stack5, stack6, stack7, stack8, stack9)
 

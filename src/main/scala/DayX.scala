@@ -7,5 +7,5 @@ trait DayX(day: Int):
     val filename = "day" + day + ".txt"
     val ol = FileFactory.toLineList(filename)
     ol match
-      case None => println("cant find " + filename)
+      case None => println("empty file = " + filename)
       case Some(ls) => runner(ls)
