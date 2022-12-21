@@ -66,3 +66,7 @@ object ListHelpers:
    * @return list of integers, each integer is the sum of one list
    */
   def listOfSums(ll: List[List[Int]]): List[Int] = ll.map(l => l.sum)
+
+  def extendAt[A](ll: List[List[A]], idx: Int, la: List[A]): List[List[A]] =
+    val t = ll.drop(idx)
+    ll.take(idx) ::: (t.head ::: la) :: t.tail
