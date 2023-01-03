@@ -13,6 +13,9 @@
   Day10.show("Cathode Ray Tube")
   Day11.show("Monkey in the Middle")
   //Day12.show("Hill Climbing")
+  Day14.show("Regolith Reservoir")
+  //Day20.show("Grove Positioning System")
+  Day21.show("Monkey Math")
 
   //Day99.show("Testing..")
 
