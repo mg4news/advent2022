@@ -85,7 +85,7 @@ object Day11 extends DayX(11) {
     case _ => ms
 
   override def runner(ls: List[String]): Unit =
-    val ms = ListHelpers.toNonEmpty(ls).grouped(6)
+    val ms = AdventUtils.toNonEmpty(ls).grouped(6)
     val monkeys = (for m <- ms yield monkeyMaker(m)).toList
 
     val m1 = doRounds(20, monkeys, 0)

@@ -7,9 +7,9 @@ object Day1 extends DayX(1):
     // order the list be descending
     // - show head = max
     // - show sum of first 3
-    val lls = ListHelpers.splitByEmptyString(ls)
+    val lls = AdventUtils.splitByEmptyString(ls)
     val lli = lls.map(l => l.map(s => s.toInt))
-    val sums = ListHelpers.listOfSums(lli)
+    val sums = AdventUtils.listOfSums(lli)
     val ordered = sums.sorted(Ordering.Int.reverse)
     println("max = " + ordered.head)
     println("sum of 3 = " + ordered.take(3).sum)

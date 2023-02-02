@@ -1,5 +1,5 @@
-// Helper functions for lists of strings 
-object ListHelpers:
+// Helper functions
+object AdventUtils:
   
   // Returns true if the string contains (i.e. substring) any of the strings from the set
   // Note that this does not just look at words, it looks at full case sensitive substrings
@@ -23,7 +23,7 @@ object ListHelpers:
   /**
    * Removes all empty strings (lines) from a list of strings
    * @param ls List of strings, may have empty lines 
-   * @return List of strings witn no empty lines
+   * @return List of strings with no empty lines
    */
   def toNonEmpty(ls: List[String]): List[String] = 
     for l <- ls if l.nonEmpty yield l
@@ -70,3 +70,16 @@ object ListHelpers:
   def extendAt[A](ll: List[List[A]], idx: Int, la: List[A]): List[List[A]] =
     val t = ll.drop(idx)
     ll.take(idx) ::: (t.head ::: la) :: t.tail
+
+  /**
+   * Draws a "grid" i.e. a 2D array
+   * @param grid: A 2D array
+   * @param dense: If true no spaces, else one space
+   * @tparam A: The grid element type
+   */
+  def drawGrid[A](grid: Array[Array[A]], dense: Boolean = true): Unit =
+    for (y <- grid(0).indices)
+      for (x <- grid.indices)
+        print(grid(x)(y))
+        if (!dense) print(" ")
+      println

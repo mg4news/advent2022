@@ -1,25 +1,22 @@
 import scala.annotation.tailrec
+import Point._
 
 object Day14 extends DayX(14)  {
-  private case class Point(x: Int, y: Int) {
-    override def toString: String = "p(" + x + "," + y + ")"
-    def sub(p: Point): Point = Point(x-p.x, y-p.y)
-    def next(grid: Array[Array[Char]], xoff: Int): Option[Point] =
-      val base = Vector(Point(x,y+1), Point(x-1,y+1), Point(x+1,y+1))
-      val nextOk = for
-        p <- base
-        if grid(p.x-xoff)(p.y) == '.'
-      yield p
-      val nextFall = for
-        p <- base
-        if grid(p.x-xoff)(p.y) == '~'
-      yield p
-      if (nextOk.nonEmpty) Some(nextOk.head) else if (nextFall.nonEmpty) Option(nextFall.head) else None
-  }
+  private def nextPoint(pnt: Point, grid: Array[Array[Char]], xoff: Int): Option[Point] =
+    val base = Vector(Point(pnt.x, pnt.y + 1), Point(pnt.x - 1, pnt.y + 1), Point(pnt.x + 1, pnt.y + 1))
+    val nextOk = for
+      p <- base
+      if grid(p.x - xoff)(p.y) == '.'
+    yield p
+    val nextFall = for
+      p <- base
+      if grid(p.x - xoff)(p.y) == '~'
+    yield p
+    if (nextOk.nonEmpty) Some(nextOk.head) else if (nextFall.nonEmpty) Option(nextFall.head) else None
+
   private case class Line(s: Point, e: Point) {
     override def toString: String = "l(" + s + "->" + e + ")"
     def isVertical: Boolean = s.x == e.x
-    def sub(p: Point): Line = Line(s.sub(p), e.sub(p))
   }
 
   private def toLine(s: String): IndexedSeq[Line] =
@@ -30,18 +27,9 @@ object Day14 extends DayX(14)  {
       e = as(i).split(",")
     yield Line(Point(s(0).toInt,s(1).toInt), Point(e(0).toInt,e(1).toInt))
 
+  // Need to account for the (500, 0) point
   private def getLimits(lines: List[Line]): (Point, Point) =
-    @tailrec
-    def helper(lp: List[Point], minp: Point, maxp: Point): (Point, Point) = lp match
-      case  h::_ =>
-        val xmin = if (minp.x <= h.x) minp.x else h.x
-        val ymin = if (minp.y <= h.y) minp.y else h.y
-        val xmax = if (maxp.x >= h.x) maxp.x else h.x
-        val ymax = if (maxp.y >= h.y) maxp.y else h.y
-        helper(lp.tail, Point(xmin,ymin), Point(xmax,ymax))
-      case Nil => (minp, maxp)
-    val lp = lines.flatMap(l => List(l.s, l.e))
-    helper(lp, Point(500,0), Point(500,0))
+    Point.getLimits(Point(500,0) :: lines.flatMap(l => List(l.s, l.e)))
 
   @tailrec
   private def gridAddLines(grid: Array[Array[Char]], xoff: Int, lines: List[Line]): Unit =
@@ -60,7 +48,7 @@ object Day14 extends DayX(14)  {
     }
 
   @tailrec
-  private def dropSand(grid: Array[Array[Char]], xoff: Int, origin: Point): Point = origin.next(grid, xoff) match
+  private def dropSand(grid: Array[Array[Char]], xoff: Int, origin: Point): Point = nextPoint(origin, grid, xoff) match
     case Some(p) => if (grid(p.x-xoff)(p.y) == '~') p else dropSand(grid, xoff, p)
     case None => origin
 
@@ -71,12 +59,6 @@ object Day14 extends DayX(14)  {
       grid(d.x-xoff)(d.y) = 'o'
       fillSand(grid, xoff, origin, acc+1)
     }
-
-  private def drawGrid(grid: Array[Array[Char]], width: Int, height: Int): Unit =
-    for (y <- 0 until height)
-      for (x <- 0 until width)
-        print(grid(x)(y))
-      println
 
   private def part1(ll: List[Line]): Unit =
     println()
@@ -100,11 +82,11 @@ object Day14 extends DayX(14)  {
 
     // insert lines, fill with sand
     gridAddLines(grid, xoff, ll)
-    //drawGrid(grid, xdim, ydim)
-    //println()
+    AdventUtils.drawGrid(grid,false)
+    println()
     println("sand = " + fillSand(grid, xoff, Point(500, 0)))
-    //println()
-    //drawGrid(grid, xdim, ydim)
+    println()
+    AdventUtils.drawGrid(grid,false)
 
   private def part2(ll: List[Line]): Unit =
     println()
@@ -123,11 +105,11 @@ object Day14 extends DayX(14)  {
     grid(500 - xoff)(0) = '+'
     for (x <- 0 until xdim) grid(x)(ydim - 1) = '#'
     gridAddLines(grid, xoff, ll)
-    //drawGrid(grid, xdim, ydim)
-    //println()
+    AdventUtils.drawGrid(grid,false)
+    println()
     println("sand = " + (fillSand(grid, xoff, Point(500, 0)) + 1)) // add 1 to account for standing above 500,0
-    //println()
-    //drawGrid(grid, xdim, ydim)
+    println()
+    AdventUtils.drawGrid(grid,false)
 
   override def runner(ls: List[String]): Unit =
     val ll = ls.flatMap(s => toLine(s))

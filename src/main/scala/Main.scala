@@ -12,8 +12,10 @@
   Day9.show("Rope Bridge")
   Day10.show("Cathode Ray Tube")
   Day11.show("Monkey in the Middle")
-  //Day12.show("Hill Climbing")
+  Day12.show("Hill Climbing")
+  //Day13.show("Distress Signal")
   Day14.show("Regolith Reservoir")
+  Day15.show("Beacon Exclusion Zone")
   //Day20.show("Grove Positioning System")
   Day21.show("Monkey Math")
 

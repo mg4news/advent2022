@@ -1,73 +1,52 @@
-object Day12 extends DayX(12) {
+object Day12 extends DayX(12):
 
-  case class Coord(x: Int, y: Int) {
-    override def toString: String = "(" + x + "," + y + ")"
-  }
+  private def canMove(from: Char, to: Char): Boolean =
+    def helper(c: Char): Char = if c == 'S' then 'a' else if c == 'E' then 'z' else c
+    if from == 'E' then false else helper(to).toInt - helper(from).toInt <= 1
 
-  def findC(c: Char, lc: List[List[Char]]): Coord =
-    val res = for {
-      x <- lc.head.indices
-      y <- lc.indices
-      if c == lc(y)(x)
-    } yield Coord(x,y)
-    res.head
+  // all new possible neighbours
+  // The history is the set of moves required to reach this point
+  private def legalNeighbours(point: Point, grid: Grid[Char], length: Int): LazyList[(Point, Int)] =
+    val res = grid.adjacent(point).filter(p => canMove(grid(point), grid(p))).map(p => (p, length+1))
+    res.to(LazyList)
 
-  // "S" becomes "a"
-  // Can step up 1, same, or down many
-  def canMove(f:Coord, t:Coord, lc: List[List[Char]]): Boolean =
-    val from = if (lc(f.y)(f.x) == 'S') 'a' else lc(f.y)(f.x)
-    val to = lc(t.y)(t.x)
-    val diff = to.toInt - from.toInt
-    if (lc(f.y)(f.x) == 'E' || diff <= 0 || diff == 1)
-      //println(" > " + f + "=" + lc(f.y)(f.x) + " to " + t + "=" + lc(t.y)(t.x))
-      true
-    else false
-
-  // all legal neighbours
-  def legalNext(coord:Coord, lc: List[List[Char]]): List[Coord] =
-    val x = coord.x
-    val y = coord.y
-    List(Coord(x+1,y), Coord(x-1,y), Coord(x,y+1), Coord(x,y-1)).
-      filter(c => c.x >= 0 && c.y >= 0).
-      filter(c => c.x < lc.head.length && c.y < lc.length).
-      filter(c => canMove(coord, c, lc))
-    
-  // Takes all the legal neighbours, for each generate a lazylist entry of the new coordinate and the path/history to get theie   
-  def nextWithHistory(lc: List[List[Char]] ,c: Coord, history: List[Coord]): LazyList[(Coord, List[Coord])] =
-    legalNext(c, lc).map(elem => (elem, c::history)).to(LazyList)
-
-  // all NEW next, with history
-  def newNext(neighbours: LazyList[(Coord, List[Coord])], explored: Set[Coord]): LazyList[(Coord, List[Coord])] =
+  private def newNeighbours(neighbours: LazyList[(Point, Int)], explored: Set[Point]): LazyList[(Point, Int)] =
     neighbours.filterNot(elem => explored.contains(elem._1))
 
-  // Stream of all possible paths that can be followed, starting at the head if the "initial" LazyList
-  def from(lc: List[List[Char]],
-           initial: LazyList[(Coord, List[Coord])],
-           explored: Set[Coord]): LazyList[(Coord, List[Coord])] =
-    if (initial.isEmpty) LazyList.empty
-    else {
-      val more = for {
-        (coord, moves) <- initial
-        next <- newNext(nextWithHistory(lc, coord, moves), explored)
-      } yield next
-      initial ++ from(lc, more, explored ++ more.map(_._1))
-    }
+  private def deDup(ll: LazyList[(Point, Int)]): LazyList[(Point, Int)] =
+    if ll.length < 2 then ll else ll.toSet.to(LazyList)
 
-  def isEnd(c: Coord, lc: List[List[Char]]): Boolean =
-    if (lc(c.y)(c.x) == 'E') true else false
+  private def from(initial: LazyList[(Point, Int)], explored: Set[Point], grid: Grid[Char]): LazyList[(Point, Int)] =
+    if initial.isEmpty then LazyList.empty
+    else
+      val more = deDup(for {
+        (point, length) <- initial
+        next <- newNeighbours(legalNeighbours(point, grid, length), explored)
+      } yield next)
+      initial ++ from(more, explored ++ more.map(_._1), grid)
+
+  def isChar(p: Point, grid: Grid[Char], c: Char): Boolean = grid(p) == c
 
   override def runner(ls: List[String]): Unit =
     val lc = ls.map(s => s.toList)
-    val start = findC('S', lc)
-    val end = findC('E', lc)
-    println("start = " + start)
-    println("end = " + end)
+    val grid = Grid[Char](ls.head.length, ls.length, 0, 0)
+    grid.fill(ls.map(_.toList))
+    if ls.length < 10 then grid.show()
 
-    lazy val pathsFromStart: LazyList[(Coord, List[Coord])] = from(lc, LazyList((start,List.empty[Coord])), Set(start))
-    lazy val pathsToEnd: LazyList[(Coord, List[Coord])] = pathsFromStart.filter(elem => isEnd(elem._1, lc))
-    val paths = pathsToEnd.map(elem => elem._2.length).sorted.reverse
-    println("length = " + paths.head)
+    val start = grid.find('S').getOrElse(Point(0,0))
+    val end = grid.find('E').getOrElse(Point(0,0))
 
+    lazy val pathsFromStart: LazyList[(Point, Int)] = from(LazyList((start, 0)), Set(start), grid)
+    lazy val pathsToEnd = pathsFromStart.filter(e => isChar(e._1, grid, 'E'))
+    println("Part 1: path length = " + pathsToEnd.head._2)
 
+    val la = grid.findAll('a')
+    lazy val pathsFromA: LazyList[(Point, Int)] = from(
+      la.map(p => (p, 0)).to(LazyList),
+      la.toSet,
+      grid)
+    lazy val pathsAtoE = pathsFromA.filter(e => isChar(e._1, grid, 'E'))
+    println("Part 2: path length = " + pathsAtoE.head._2)
+  
+end Day12
 
-}
