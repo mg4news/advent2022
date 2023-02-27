@@ -1,11 +1,14 @@
 trait DayX(day: Int):
-  def runner(ls: List[String]): Unit
+  
+  private val filename = "day" + day + ".txt"
+  val lineList: List[String] = FileFactory.toLineList(filename).getOrElse(List())
+  
+  def runner(): Unit
 
   def show(extra: String): Unit =
     println("")
     println("Day" + day + ": " + extra)
-    val filename = "day" + day + ".txt"
-    val ol = FileFactory.toLineList(filename)
-    ol match
-      case None => println("empty file = " + filename)
-      case Some(ls) => runner(ls)
+    if lineList.nonEmpty then runner()
+    else println("empty file = " + filename)
+
+  

@@ -74,9 +74,9 @@ object Day7 extends DayX(7) {
       } else lteSize(le.tail, size, prev)
     case Nil => prev
 
-  override def runner(ls: List[String]): Unit =
+  override def runner(): Unit =
     // To strings of Intem, sorted alphabetically
-    val lc = walker(ls).sorted
+    val lc = walker(lineList).sorted
 
     // get directory sums
     val lsum = sumDirs(lc)

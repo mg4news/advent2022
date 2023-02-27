@@ -9,7 +9,7 @@ object Day6 extends DayX (6) {
     else if lc.take(hdr).toSet.size == hdr then Some(acc + hdr)
     else dataOffset(lc.tail, hdr, acc+1)
 
-  override def runner(ls: List[String]): Unit =
-    println("Data input = " + dataOffset(ls.head.toList, 4))
-    println("Mesg input = " + dataOffset(ls.head.toList, 14))
+  override def runner(): Unit =
+    println("Data input = " + dataOffset(lineList.head.toList, 4))
+    println("Mesg input = " + dataOffset(lineList.head.toList, 14))
 }

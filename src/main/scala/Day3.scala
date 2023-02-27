@@ -24,8 +24,8 @@ object Day3 extends DayX(3):
       case _ => acc
     helper(ls, 0)
 
-  override def runner(ls: List[String]): Unit =
-    val lols = ls.map(l => l.toList.map(c => char2Int(c)))
+  override def runner(): Unit =
+    val lols = lineList.map(l => l.toList.map(c => char2Int(c)))
     println("sum priorities = " + lols.map(i => inter(i)).sum)
     println("sum badges     = " + sumBadges(lols))
 

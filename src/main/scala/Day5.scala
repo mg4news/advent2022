@@ -46,8 +46,8 @@ object Day5 extends DayX(5) {
         runInstructions(li.tail, h.runMe(st, preserve), preserve)
       case _ => st
 
-  override def runner(ls: List[String]): Unit =
-    val lls = AdventUtils.splitByEmptyString(ls)
+  override def runner(): Unit =
+    val lls = AdventUtils.splitByEmptyString(lineList)
     val insts = lls(1).map(s => Instruction(s))
     val stacks = List(stack1, stack2, stack3, stack4, stack5, stack6, stack7, stack8, stack9)
 

@@ -30,7 +30,7 @@ object Day2 extends DayX(2):
   def score(s: String, strategy: List[(String, Int)]): Int =
     strategy.find(x => x._1 == s).getOrElse(("", 0))._2
 
-  override def runner(ls: List[String]): Unit =
-    println("real score 1 = " + ls.map(s => score(s, strategy1)).sum)
-    println("real score 2 = " + ls.map(s => score(s, strategy2)).sum)
+  override def runner(): Unit =
+    println("real score 1 = " + lineList.map(s => score(s, strategy1)).sum)
+    println("real score 2 = " + lineList.map(s => score(s, strategy2)).sum)
 

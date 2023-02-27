@@ -52,8 +52,8 @@ object Day8 extends DayX(8) {
     }
     m
 
-  override def runner(ls: List[String]): Unit =
-    val li = ls.map(_.toList.map(c => c.toInt - '0'.toInt))
+  override def runner(): Unit =
+    val li = lineList.map(_.toList.map(c => c.toInt - '0'.toInt))
     //val li = List(
     //  List(3,0,3,7,3),
     //  List(2,5,5,1,2),

@@ -111,8 +111,8 @@ object Day14 extends DayX(14)  {
     println()
     AdventUtils.drawGrid(grid,false)
 
-  override def runner(ls: List[String]): Unit =
-    val ll = ls.flatMap(s => toLine(s))
+  override def runner(): Unit =
+    val ll = lineList.flatMap(s => toLine(s))
     part1(ll)
     part2(ll)
 }

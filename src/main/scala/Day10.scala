@@ -18,9 +18,9 @@ object Day10 extends DayX(10) {
       if (r - (pixel % width)).abs <= 1 then '#' else '.'
     lc.grouped(width).map(_.mkString).toList
 
-  override def runner(ls: List[String]): Unit =
-    println("instructions: " + ls.length)
-    val reg = execute(1, addxList(ls))
+  override def runner(): Unit =
+    println("instructions: " + lineList.length)
+    val reg = execute(1, addxList(lineList))
     println("result size = " + reg.length)
 
     //println("reg(20)  = " + reg(19)*20)

@@ -49,8 +49,8 @@ object Day9 extends DayX(9) {
     val rope = buildRope(len)
     helper(rope, diffs, Set(Coord(0,0)))
 
-  override def runner(ls: List[String]): Unit =
-    val diffs = movesToDiffs(ls)
+  override def runner(): Unit =
+    val diffs = movesToDiffs(lineList)
     val unique = applyAllDiffs(10, diffs)
     println("size of unique = " + unique.size)
 }

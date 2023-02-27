@@ -27,11 +27,11 @@ object Day12 extends DayX(12):
 
   def isChar(p: Point, grid: Grid[Char], c: Char): Boolean = grid(p) == c
 
-  override def runner(ls: List[String]): Unit =
-    val lc = ls.map(s => s.toList)
-    val grid = Grid[Char](ls.head.length, ls.length, 0, 0)
-    grid.fill(ls.map(_.toList))
-    if ls.length < 10 then grid.show()
+  override def runner(): Unit =
+    val lc = lineList.map(s => s.toList)
+    val grid = Grid[Char](lineList.head.length, lineList.length, 0, 0)
+    grid.fill(lineList.map(_.toList))
+    if lineList.length < 10 then grid.show()
 
     val start = grid.find('S').getOrElse(Point(0,0))
     val end = grid.find('E').getOrElse(Point(0,0))

@@ -104,8 +104,8 @@ object Day15 extends DayX(15):
       if (row(i) == '#') count = count + 1
     println("Part 1: count = " + count)
 
-  override def runner(ls: List[String]): Unit =
-    val info = ls.map(s => buildElement(s))
+  override def runner(): Unit =
+    val info = lineList.map(s => buildElement(s))
     val testData = if info.length < 20 then true else false
 
     // for the test case draw the grid. Will just skip the real array

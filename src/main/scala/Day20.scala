@@ -54,13 +54,13 @@ object Day20 extends DayX(20) {
       mixed(idx)._1
   }
 
-  override def runner(ls: List[String]): Unit =
-    val data1 = Data1(ls.map(_.toLong))
+  override def runner(): Unit =
+    val data1 = Data1(lineList.map(_.toLong))
     val part1 = data1.refNumber(1000)
       + data1.refNumber(2000)
       + data1.refNumber(3000)
     println("Part 1 = " + part1)
-    val data2 = Data2(ls.map(_.toLong))
+    val data2 = Data2(lineList.map(_.toLong))
     val part2 = data2.refNumber(1000)
       + data2.refNumber(2000)
       + data2.refNumber(3000)

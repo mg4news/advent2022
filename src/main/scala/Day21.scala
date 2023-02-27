@@ -46,8 +46,8 @@ object Day21 extends DayX(21) {
         resolveForHumn(mm, nfrom, nacc)
       case MonkeyVal(_) => 0
 
-  def runner(ls: List[String]): Unit =
-    val mm = ls.map(s => stringToMonkeyPair(s)).toMap
+  def runner(): Unit =
+    val mm = lineList.map(s => stringToMonkeyPair(s)).toMap
     println("part1 = " + resolveFrom(mm, "root"))
 
     val root = mm("root").asInstanceOf[MonkeyOp]
